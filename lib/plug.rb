@@ -4,7 +4,7 @@ module Plugs
   class Plug
     attr_reader :key, :result
 
-    def initialize(key:, eager: false, &block)
+    def initialize(key:, eager: true, &block)
       @key = key
       @proc = block
       @result = eager ? block.call : nil

@@ -22,7 +22,7 @@ module Plugs
     end
 
     def plug(key, &block)
-      plug = Plug.new(key:, eager: true, &block)
+      plug = Plug.new(key:, &block)
 
       plugs[key] ||= []
       plugs[key] << plug
