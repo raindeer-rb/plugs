@@ -16,9 +16,11 @@ module Plugs
 
   module ClassMethods
     def [](*keys)
-      instance = new
-      instance.plugs = plugs.values_at(*keys).flatten
-      instance
+      results = plugs.values_at(*keys).flatten.map(&:result)
+
+      return results.first if results.count <= 1
+
+      results
     end
 
     def plug(key, &block)
