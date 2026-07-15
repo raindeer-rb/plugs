@@ -2,12 +2,13 @@
 
 module Plugs
   class Plug
-    attr_reader :key, :result
+    attr_reader :key, :result, :children
 
     def initialize(key:, eager: true, &block)
       @key = key
       @proc = block
-      @result = eager ? block.call : nil
+      @result = nil
+      @children = []
     end
 
     def result
