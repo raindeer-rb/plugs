@@ -16,12 +16,12 @@ class Elements
   end
 end
 
-RSpec.describe Elements do  
-  describe '.plug' do
+RSpec.describe Elements do
+  describe '.[]' do
     context 'with a single key' do
       subject { Elements[:a] }
 
-      it 'returns the dependency' do
+      it 'returns single dependency' do
         expect(subject).to eq(A)
       end
     end
@@ -29,7 +29,7 @@ RSpec.describe Elements do
     context 'with multiple keys' do
       subject { Elements[:a, :b] }
 
-      it 'returns the dependencies' do
+      it 'returns multiple dependencies' do
         expect(subject).to eq([A, B])
       end
     end

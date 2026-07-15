@@ -5,10 +5,6 @@ require_relative 'plug'
 module Plugs
   attr_accessor :plugs
 
-  def [](*keys)
-    @plugs.values_at(*keys)
-  end
-
   def self.included(base)
     @plugs = {}
     base.extend(ClassMethods)
@@ -16,7 +12,7 @@ module Plugs
 
   module ClassMethods
     def [](*keys)
-      results = plugs.values_at(*keys).flatten.map(&:result)
+      results = plugs.fetch_values(*keys).flatten.map(&:result)
 
       return results.first if results.count <= 1
 
