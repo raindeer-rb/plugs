@@ -2,7 +2,7 @@
 
 require_relative '../../lib/plugs'
 
-class Elements
+class FlatElements
   include Plugs
 
   plug(:a) do
@@ -16,10 +16,10 @@ class Elements
   end
 end
 
-RSpec.describe Elements do
+RSpec.describe FlatElements do
   describe '.[]' do
     context 'with a single key' do
-      subject { Elements[:a] }
+      subject { FlatElements[:a] }
 
       it 'returns single dependency' do
         expect(subject).to eq(A)
@@ -27,7 +27,7 @@ RSpec.describe Elements do
     end
 
     context 'with multiple keys' do
-      subject { Elements[:a, :b] }
+      subject { FlatElements[:a, :b] }
 
       it 'returns multiple dependencies' do
         expect(subject).to eq([A, B])
