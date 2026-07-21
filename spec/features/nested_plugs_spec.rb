@@ -45,9 +45,22 @@ RSpec.describe NestedPlugs do
   end
 
   describe '.[]' do
-    describe '.to_a' do
-      it 'returns plugs' do
-        expect(described_class[:a, :b, :c, :d].to_a).to eq([1, 2, 3, 4])
+    it 'returns plugs' do
+      expect(described_class[:a, :b, :c, :d].to_a).to eq([1, 2, 4, 3])
+    end
+  end
+
+  describe '#[]' do
+    describe 'a parent plug' do
+      subject(:plugs) { described_class[:a] }
+
+      it 'includes children' do
+        expect(plugs[:b].to_a).to eq([2, 4])
+        expect(plugs[:b][:d].to_a).to eq([4])
+      end
+
+      it 'excludes siblings' do
+        expect { plugs[:b][:c] }.to raise_error(KeyError)
       end
     end
   end

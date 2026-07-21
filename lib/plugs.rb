@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 require_relative 'plug'
-require_relative 'refinements'
+require_relative 'sub_selector'
 
 module Plugs
-  using Refinements
-
   attr_reader :plugs
 
   class DuplicateKeyError < StandardError; end
@@ -16,7 +14,7 @@ module Plugs
   end
 
   def [](*keys)
-    new(plugs: plugs.slice!(*keys))
+    self.class.new(plugs: SubSelector.sub_select(plugs:, keys:), keys:)
   end
 
   def to_a
@@ -37,8 +35,6 @@ module Plugs
   end
 
   module ClassMethods
-    using Refinements
-
     def plug(key, &block)
       plug = Plug.new(key:, &block)
 
@@ -55,7 +51,7 @@ module Plugs
     end
 
     def [](*keys)
-      new(plugs: plugs.slice!(*keys), keys:)
+      new(plugs: SubSelector.sub_select(plugs:, keys:), keys:)
     end
 
     def plugs
