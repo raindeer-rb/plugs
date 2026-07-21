@@ -1,36 +1,67 @@
 # frozen_string_literal: true
 
 require_relative 'plug'
+require_relative 'sub_selector'
 
 module Plugs
-  attr_accessor :plugs
+  attr_reader :plugs
+
+  class DuplicateKeyError < StandardError; end
+
+  def initialize(plugs:, keys:)
+    @plugs = plugs
+    @keys = keys
+  end
+
+  def [](*keys)
+    self.class.new(plugs: SubSelector.sub_select(plugs:, keys:), keys:)
+  end
+
+  def to_a
+    plugs.values.flatten.map(&:result)
+  end
+
+  def to_h
+    plugs.values.each_with_object({}) do |values, hash|
+      values.each do |plug|
+        hash[plug.key] ||= []
+        hash[plug.key] << plug.result
+      end
+    end
+  end
 
   def self.included(base)
-    @plugs = {}
     base.extend(ClassMethods)
   end
 
   module ClassMethods
-    def [](*keys)
-      results = plugs.fetch_values(*keys).flatten.map(&:result)
-
-      return results.first if results.count <= 1
-
-      results
-    end
-
     def plug(key, &block)
       plug = Plug.new(key:, &block)
 
       plugs[key] ||= []
       plugs[key] << plug
+      plug_stack << plug
 
       plug.result
+
+      plug_stack.pop
+      plug_stack.last.children << plug if plug_stack.last
+
+      nil
+    end
+
+    def [](*keys)
+      new(plugs: SubSelector.sub_select(plugs:, keys:), keys:)
     end
 
     def plugs
       @plugs ||= {}
       @plugs
+    end
+
+    def plug_stack
+      @plug_stack ||= []
+      @plug_stack
     end
   end
 end
