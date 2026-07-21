@@ -43,12 +43,12 @@ class MyPlugs
   end
 end
 
-# Get a top level dependency and its children:
+# Get a top level dependency and its children.
 def new(plugs: MyPlugs[:html, :form])
   plugs.to_a # => [HTMLNode, FormLexeme, FormNode].
 end
 
-# Get all "node" plugs regardless of their parent:
+# Get all "node" plugs regardless of their parent.
 def new(plugs: MyPlugs[:node])
   plugs.to_a # => [HTMLNode, FormNode]
 end
@@ -93,7 +93,7 @@ Say your library uses these dependencies most of the time, but allows other user
 Parser.new(node_types: OldPlugs[:form, :html, :var] + NewPlugs[:form, :toc])
 ```
 
-The "new" form will take precedence and override the "old" form, and the `:toc` plug will be added to the mix.
+The "new" `:form` will take precedence and override the "old" `:form`. The `:toc` plug will be added to the resulting instance.
 
 ## API
 
