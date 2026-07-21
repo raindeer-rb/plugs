@@ -95,10 +95,10 @@ Plugs can be sliced out from the nested tree structure. For example you could ge
 ### Combined Plugs
 
 ```ruby
-Parser.new(node_types: OldPlugs[:form, :html, :var] + NewPlugs[:toc])
+Parser.new(node_types: A[:form, :html, :var] + B[:toc])
 ```
 
-The `:toc` plug will be added to the `OldPlugs` instance.
+The `:toc` plug will be added to the `A` instance.
 
 ## Installation
 
