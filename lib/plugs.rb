@@ -58,6 +58,10 @@ module Plugs
       new(plugs: SubSelector.sub_select(plugs:, keys:), keys:)
     end
 
+    def to_a
+      plugs.values.flatten.map(&:result)
+    end
+
     def plugs
       @plugs ||= {}
       @plugs
