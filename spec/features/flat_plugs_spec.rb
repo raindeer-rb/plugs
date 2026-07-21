@@ -16,7 +16,7 @@ class FlatPlugs
   end
 end
 
-RSpec.describe FlatPlugs do
+RSpec.describe 'Flat Plugs' do
   describe '.[]' do
     context 'with a single key' do
       subject { FlatPlugs[:a].to_a }

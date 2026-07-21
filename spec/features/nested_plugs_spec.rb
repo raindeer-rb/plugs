@@ -20,10 +20,10 @@ class NestedPlugs
   end
 end
 
-RSpec.describe NestedPlugs do
+RSpec.describe 'Nested Plugs' do
   describe '.plug(:key)' do
     context 'top level' do
-      subject(:plug) { described_class.plugs[:a].first }
+      subject(:plug) { NestedPlugs.plugs[:a].first }
 
       it 'defines plug' do
         expect(plug).to be_an_instance_of(Plugs::Plug)
@@ -36,7 +36,7 @@ RSpec.describe NestedPlugs do
     end
 
     context 'second level' do
-      subject(:plug) { described_class.plugs[:b].first }
+      subject(:plug) { NestedPlugs.plugs[:b].first }
 
       it 'defines a child' do
         expect(plug.children.first).to have_attributes(key: :d)
@@ -46,13 +46,13 @@ RSpec.describe NestedPlugs do
 
   describe '.[]' do
     it 'returns plugs' do
-      expect(described_class[:a, :b, :c, :d].to_a).to eq([1, 2, 4, 3])
+      expect(NestedPlugs[:a, :b, :c, :d].to_a).to eq([1, 2, 4, 3])
     end
   end
 
   describe '#[]' do
     describe 'a parent plug' do
-      subject(:plugs) { described_class[:a] }
+      subject(:plugs) { NestedPlugs[:a] }
 
       it 'includes children' do
         expect(plugs[:b].to_a).to eq([2, 4])

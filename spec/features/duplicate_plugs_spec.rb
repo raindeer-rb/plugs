@@ -14,7 +14,7 @@ class DuplicatePlugs
   end
 end
 
-RSpec.describe DuplicatePlugs do
+RSpec.describe 'Duplicate Plugs' do
   describe '.[]' do
     context 'with a single key' do
       subject { DuplicatePlugs[:a] }
