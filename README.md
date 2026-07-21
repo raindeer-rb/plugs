@@ -68,7 +68,7 @@ They are unit tested individually and created at completely separate stages.
 
 But they are both enabled or disabled at the same time depending on configuration:
 ```ruby
-Parser.new(node_types: [:form])
+Parser.new(node_types: Elements[:form])
 ```
 
 Plugs lets you pull them together:
