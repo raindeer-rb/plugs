@@ -15,6 +15,12 @@ module Plugs
     self.class.new(plugs: SubSelector.sub_select(plugs:, keys:), keys:)
   end
 
+  def +(b)
+    @plugs.merge!(b.plugs) { |key, a_values, b_values| [*a_values, *b_values] }
+
+    self
+  end
+
   def to_a
     plugs.values.flatten.map(&:result)
   end

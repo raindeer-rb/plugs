@@ -86,20 +86,19 @@ plug(:form) do
 end
 ```
 
-### Overriding Dependencies
-
-Say your library uses these dependencies most of the time, but allows other users of the gem to override these dependencies:
-```ruby
-Parser.new(node_types: OldPlugs[:form, :html, :var] + NewPlugs[:form, :toc])
-```
-
-The "new" `:form` will take precedence and override the "old" `:form`. The `:toc` plug will be added to the resulting instance.
-
 ## API
 
 ### Nested Plugs
 
 Plugs can be sliced out from the nested tree structure. For example you could get all plugs that are `:lexeme` or just the single that is `:form`... doesn't matter where they sit in the hierarchy. On the flip side if you slice a single plug that has children then only that plug and it's children will be included. It goes both ways.
+
+### Combined Plugs
+
+```ruby
+Parser.new(node_types: OldPlugs[:form, :html, :var] + NewPlugs[:toc])
+```
+
+The `:toc` plug will be added to the `OldPlugs` instance.
 
 ## Installation
 
