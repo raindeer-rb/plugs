@@ -6,8 +6,6 @@ require_relative 'sub_selector'
 module Plugs
   attr_reader :plugs
 
-  class DuplicateKeyError < StandardError; end
-
   def initialize(plugs:, keys:)
     @plugs = plugs
     @keys = keys
