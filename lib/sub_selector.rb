@@ -5,12 +5,13 @@ require_relative 'refinements'
 module Plugs
   module SubSelector
     using Refinements
-    extend self
+
+    module_function
 
     def sub_select(plugs:, keys:)
       selection = {}
 
-      plugs.slice!(*keys).values.each do |parent_plugs|
+      plugs.slice!(*keys).each_value do |parent_plugs|
         parent_plugs.each do |parent_plug|
           selection[parent_plug.key] ||= []
           selection[parent_plug.key] << parent_plug unless selection[parent_plug.key].include?(parent_plug)

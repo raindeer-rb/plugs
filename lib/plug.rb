@@ -2,9 +2,9 @@
 
 module Plugs
   class Plug
-    attr_reader :key, :result, :children
+    attr_reader :key, :children
 
-    def initialize(key:, eager: true, &block)
+    def initialize(key:, &block)
       @key = key
       @proc = block
       @result = nil
