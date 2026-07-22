@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
+require_relative 'lazy'
 require_relative 'plug'
 require_relative 'sub_selector'
-require_relative 'lazy'
 
 module Plugs
   attr_reader :plugs
@@ -16,8 +16,8 @@ module Plugs
     self.class.new(plugs: SubSelector.sub_select(plugs:, keys:), keys:)
   end
 
-  def +(b)
-    @plugs.merge!(b.plugs) { |_key, a_values, b_values| [*a_values, *b_values] }
+  def +(new_plugs)
+    @plugs.merge!(new_plugs.plugs) { |_key, a_values, b_values| [*a_values, *b_values] }
 
     self
   end
