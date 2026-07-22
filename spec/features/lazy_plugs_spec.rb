@@ -44,7 +44,7 @@ RSpec.describe 'Lazy Plugs' do
 
   describe '.[]' do
     it 'does not evaluate lazy blocks' do
-      selection = LazyPlugs[:lazy_a]
+      LazyPlugs[:lazy_a]
 
       expect(LazyPlugs.a_call_count).to eq(0)
       expect(LazyPlugs.b_call_count).to eq(0)

@@ -17,7 +17,7 @@ module Plugs
   end
 
   def +(b)
-    @plugs.merge!(b.plugs) { |key, a_values, b_values| [*a_values, *b_values] }
+    @plugs.merge!(b.plugs) { |_key, a_values, b_values| [*a_values, *b_values] }
 
     self
   end
