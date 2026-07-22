@@ -88,14 +88,39 @@ end
 
 ## API
 
-### Nested Plugs
+> [!note]
+> Plugs is designed for defining dependencies on class-load. Please don't instantiate dependencies again and again at runtime.
+
+### `.plug(:name)`
 
 Plugs can be sliced out from the nested tree structure. For example you could get all plugs that are `:lexeme` or just the single that is `:form`... doesn't matter where they sit in the hierarchy. On the flip side if you slice a single plug that has children then only that plug and it's children will be included. It goes both ways.
 
-### Combined Plugs
+### `.lazy { ... }`
+
+Plugs defined via `.plug()` are eager loaded by default so that they can define child plugs. Wrap the "return value" section of your plug in a `lazy` block to defer evaluation until that plug is called, either directly or indirectly as a dependency:
 
 ```ruby
-Parser.new(node_types: A[:form, :html, :var] + B[:toc])
+plug(:eager_a) do
+  plug(:lazy_b) do
+    lazy do
+      require_relative '../lazy_b'
+      LazyB
+    end
+
+    plug(:eager_c) do
+      require_relative '../eager_c'
+      EagerC
+    end
+  end
+end
+```
+
+The `:lazy_b` and `:eager_c` plugs will still be called eagerly and their keys added to the dependency tree, but the `lazy` block will not be evaluated until called via something like `MyPlugs[:eager_a]`.
+
+### `A[] + B[]`
+
+```ruby
+A[:form, :html, :var] + B[:toc]
 ```
 
 The `:toc` plug will be added to the `A` instance.

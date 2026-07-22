@@ -2,6 +2,7 @@
 
 require_relative 'plug'
 require_relative 'sub_selector'
+require_relative 'lazy'
 
 module Plugs
   attr_reader :plugs
@@ -22,14 +23,14 @@ module Plugs
   end
 
   def to_a
-    plugs.values.flatten.map(&:result)
+    plugs.values.flatten.map(&:result).map { |value| Lazy.unwrap(value) }
   end
 
   def to_h
     plugs.values.each_with_object({}) do |values, hash|
       values.each do |plug|
         hash[plug.key] ||= []
-        hash[plug.key] << plug.result
+        hash[plug.key] << Lazy.unwrap(plug.result)
       end
     end
   end
@@ -54,12 +55,16 @@ module Plugs
       nil
     end
 
+    def lazy(&block)
+      Lazy.new(&block)
+    end
+
     def [](*keys)
       new(plugs: SubSelector.sub_select(plugs:, keys:), keys:)
     end
 
     def to_a
-      plugs.values.flatten.map(&:result)
+      plugs.values.flatten.map(&:result).map { |value| Lazy.unwrap(value) }
     end
 
     def plugs
