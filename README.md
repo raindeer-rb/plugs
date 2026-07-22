@@ -91,9 +91,11 @@ end
 > [!note]
 > Plugs is designed for defining dependencies on class-load. Please don't instantiate dependencies again and again at runtime.
 
-### `.plug(:name)`
+### `.plug(:key)`
 
-Plugs can be sliced out from the nested tree structure. For example you could get all plugs that are `:lexeme` or just the single that is `:form`... doesn't matter where they sit in the hierarchy. On the flip side if you slice a single plug that has children then only that plug and it's children will be included. It goes both ways.
+`.plug()` lets you define plugs in a nested tree-like structure.
+
+Plugs can be sliced out from the nested tree. For example you could get all plugs that are `:lexeme` or just the single that is `:form`... doesn't matter where they sit in the hierarchy. On the flip side if you slice a single plug that has children then only that plug and it's children will be included. It goes both ways.
 
 ### `.lazy { ... }`
 
@@ -115,7 +117,7 @@ plug(:eager_a) do
 end
 ```
 
-The `:lazy_b` and `:eager_c` plugs will still be called eagerly and their keys added to the dependency tree, but the `lazy` block will not be evaluated until called via something like `MyPlugs[:eager_a]`.
+The `:lazy_b` and `:eager_c` plugs will still be called eagerly and their keys added to the dependency tree, but the `lazy` block will not be evaluated until called via something like `MyPlugs[:eager_a].to_a`.
 
 ### `A[] + B[]`
 
