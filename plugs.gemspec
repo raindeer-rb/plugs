@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.email = ['maediprichard@gmail.com']
 
   spec.summary = 'Keep code loosely coupled. Keep features tightly coupled'
-  spec.description = <<~DESCRIPTION
-    Plugs are dependencies that are loosely coupled internally but externally appear as one entity such as a feature, configuration or plugin.#{' '}
+  spec.description = <<~DESCRIPTION  
+    Plugs are dependencies that are loosely coupled internally but externally appear as one entity such as a feature, configuration or plugin.  
     A plug is reusable, shareable and overridable.
   DESCRIPTION
 

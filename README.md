@@ -2,7 +2,7 @@
 
 # Plugs
 
-Plugs are dependencies that are loosely coupled internally but externally appear as one entity such as a feature, config object or plugin. A plug is reusable, shareable and overridable.
+Plugs are dependencies that are loosely coupled internally but externally appear as one entity such as a feature, config object or plugin. A plug is reusable, shareable and overridable. Declare dependencies as a nested tree but retrieve them by key, regardless of their nesting depth.
 
 > [!note]
 > Plugs is for local dependency management. For global dependency management see [Providers](https://github.com/raindeer-rb/providers)
