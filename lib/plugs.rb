@@ -16,6 +16,10 @@ module Plugs
     self.class.new(plugs: SubSelector.sub_select(plugs:, keys:), keys:)
   end
 
+  def key?(key)
+    !!@plugs[key]
+  end
+
   def +(new_plugs)
     @plugs.merge!(new_plugs.plugs) { |_key, a_values, b_values| [*a_values, *b_values] }
 
@@ -61,6 +65,10 @@ module Plugs
 
     def [](*keys)
       new(plugs: SubSelector.sub_select(plugs:, keys:), keys:)
+    end
+
+    def key?(key)
+      !!plugs[key]
     end
 
     def to_a
