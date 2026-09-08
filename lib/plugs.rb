@@ -80,9 +80,35 @@ module Plugs
       @plugs
     end
 
+    # Makes this class's plug tree shareable across Ractors, so a worker Ractor can
+    # read plugs via SomeClass[...] / SomeClass.plugs. Call once boot is complete
+    # (every plug: block for this class has already been declared) and before
+    # spawning any worker Ractors -- the tree is read-only from that point on, same
+    # as any other frozen/shareable object.
+    #
+    # Raises Ractor::IsolationError if any plug's block closes over unshareable
+    # state (e.g. a live object stored in a local variable) -- plug blocks must
+    # only reference Ractor-shareable values (classes, frozen literals, etc.) for
+    # this to succeed.
+    def make_shareable!
+      warm_lazy_caches!
+      Ractor.make_shareable(plugs)
+    end
+
     def plug_stack
       @plug_stack ||= []
       @plug_stack
+    end
+
+    private
+
+    # Lazy#call is lazily memoized (computed on first call, not at declaration time)
+    # -- calling it for the first time *after* freezing would raise FrozenError
+    # trying to cache its result. Resolve every plug's result now, while everything's
+    # still mutable, so any Lazy it holds already has its value cached by the time
+    # Ractor.make_shareable freezes it.
+    def warm_lazy_caches!
+      plugs.values.flatten.each { |plug| Lazy.unwrap(plug.result) }
     end
   end
 end

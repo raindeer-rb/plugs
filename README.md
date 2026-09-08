@@ -119,6 +119,20 @@ end
 
 The `:lazy_b` and `:eager_c` plugs will still be called eagerly and their keys added to the dependency tree, but the `lazy` block will not be evaluated until called via something like `MyPlugs[:eager_a].to_a`.
 
+### `.make_shareable!`
+
+Makes a class's plug tree shareable across [Ractors](https://docs.ruby-lang.org/en/master/ractor_md.html), so plugs can be read (and lazy plugs resolved) from inside a worker Ractor:
+
+```ruby
+MyPlugs.make_shareable!
+
+Ractor.new { MyPlugs[:html, :form].to_a }.take
+```
+
+Call it once boot is complete, after every `plug(:key)` for that class has been declared and before spawning any worker Ractors. It resolves any unevaluated `lazy` blocks first, then freezes the tree -- from that point on the tree is read-only, same as any other frozen/shareable object.
+
+A plug's block can only reference Ractor-shareable state (classes, frozen literals, etc.) -- one that closes over a live, unshareable object raises `Ractor::IsolationError`.
+
 ### `A[] + B[]`
 
 ```ruby
